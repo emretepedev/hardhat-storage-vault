@@ -1,6 +1,6 @@
 {
   "name": "hardhat-storage-check",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Hardhat plugin to check the storage layout of contracts",
   "repository": "github:emretepedev/hardhat-storage-check",
   "author": {
