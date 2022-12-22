@@ -1,40 +1,55 @@
-# hardhat-storage-check
+# hardhat-storage-vault
 
-Hardhat plugin to check the storage layout of contracts.
+Hardhat plugin to check and lock the storage layout of contracts.
 
 ## What
 
-This plugin will help you avoid possible errors by controlling your storage layout.
+This plugin will help you avoid possible errors by checking and locking your storage layout.
 
 ## Installation
 
 ```bash
-npm install hardhat-storage-check
+npm install hardhat-storage-vault
 ```
 
 Import the plugin in your `hardhat.config.js`:
 
 ```js
-require("hardhat-storage-check");
+require("hardhat-storage-vault");
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
-import "hardhat-storage-check";
+import "hardhat-storage-vault";
 ```
 
 ## Tasks
 
-This plugin adds the `hardhat-storage-check` task to Hardhat:
+This plugin adds `storage-check` and `storage-lock` task to Hardhat:
 
-```
+````
 Usage: hardhat [GLOBAL OPTIONS] finder [OPTIONS] [path] [name] [...outputs]
-$ hardhat storage-check
+$ hardhat storage-check --compile
+
+Error in plugin hardhat-storage-vault:
+Invalid slot value!
+  Contract path: contracts/Example.sol
+  Contract name: Example
+    Slot name: slot0
+    Slot (Expected): 1
+    Slot (Actual): 0
+
+
+Usage: hardhat [GLOBAL OPTIONS] finder [OPTIONS] [path] [name] [...outputs]
+$ hardhat storage-lock --prettify --override
+
+Success in plugin hardhat-storage-vault:
+Create storage-store-lock.json file.
 
 ## Environment extensions
 
-This plugin extends the Hardhat Runtime Environment by adding an `storageCheck` field whose type is `Finder`.
+This plugin extends the Hardhat Runtime Environment by adding an `storageVault` field whose type is `Finder`.
 
 ## Configuration
 
@@ -44,31 +59,28 @@ This is an example of how to set it:
 
 ```js
 module.exports = {
-  storageCheck: {
-  	configPath: "storage-check.json",
-    noCompile: false,
-    runOnCompile: false,
+  storageVault: {
+  	check: {
+      storePath: "storage-store.json",
+      compile: false,
+    },
+  	lock: {
+      excludeContracts: ["contracts/Outdated.sol"],
+      storeName: "storage-store-lock.json",
+      prettify: false,
+      override: false,
+      compile: false,
+    },
   },
 };
-```
+````
 
-| Option              | Type       | Default                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Description                                                         |
-| ------------------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| configPath          | _String_   | storage-check.json                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | Config path of the plugin.                            |
-| noCompile           | _Boolean_  | false                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Don't compile before running this task.                             |
-| runOnCompile        | _Boolean_  | false                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Run finder task during compile task.                                |
-
-## Usage
-
-There are no additional steps you need to take for this plugin to work.
-
-Install it and access ethers through the Hardhat Runtime Environment anywhere you need it (tasks, scripts, tests, etc).
-
-```ts
-import { storageCheck } from "hardhat";
-
-async function main() {
-  const makeSureStorage = await storageCheck.check();
-  console.log(makeSureStorage); // true
-}
-```
+| Task  | Option           | Type       | Default                 | Description                                                      |
+| ----- | ---------------- | ---------- | ----------------------- | ---------------------------------------------------------------- |
+| Check | storePath        | _String_   | storage-store.json      | Use a specific JSON file as a storage store.                     |
+| Check | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |
+| Vault | excludeContracts | _String[]_ | []                      | Fully qualified name of contracts to ignore.                     |
+| Vault | storeName        | _String_   | storage-store-lock.json | Create or update a specific JSON file to save the storage store. |
+| Vault | prettify         | _Boolean_  | false                   | Save the file by formatting.                                     |
+| Vault | override         | _Boolean_  | false                   | Override if there is a store file with the same name.            |
+| Vault | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |
