@@ -15,6 +15,7 @@ import {
   validateFullyQualifiedNames,
 } from "../utils";
 
+// TODO: investigate to hardhat artifact cache
 export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   { excludeContracts, storeName, prettify, override, compile },
   { config, run, artifacts, finder }
