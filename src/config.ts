@@ -1,32 +1,44 @@
+import deepmerge from "deepmerge";
 import type { ConfigExtender } from "hardhat/types";
 import { cloneDeep } from "lodash";
-import {
-  DEFAULT_CONFIG_PATH,
-  DEFAULT_NO_COMPILE,
-  DEFAULT_RUN_ON_COMPILE,
-} from "./constants";
-import type { StorageCheckConfig } from "./types";
 
-const getDefaultConfig = () => ({
-  configPath: DEFAULT_CONFIG_PATH,
-  noCompile: DEFAULT_NO_COMPILE,
-  runOnCompile: DEFAULT_RUN_ON_COMPILE,
+import {
+  DEFAULT_COMPILE,
+  DEFAULT_EXCLUDE_CONTRACTS,
+  DEFAULT_OVERRIDE,
+  DEFAULT_PRETTIFY,
+  DEFAULT_STORE_NAME,
+  DEFAULT_STORE_PATH,
+} from "./constants";
+import type { StorageVaultConfig } from "./types";
+
+const getDefaultConfig = (): StorageVaultConfig => ({
+  check: {
+    storePath: DEFAULT_STORE_PATH,
+    compile: DEFAULT_COMPILE,
+  },
+  lock: {
+    excludeContracts: DEFAULT_EXCLUDE_CONTRACTS,
+    storeName: DEFAULT_STORE_NAME,
+    prettify: DEFAULT_PRETTIFY,
+    override: DEFAULT_OVERRIDE,
+    compile: DEFAULT_COMPILE,
+  },
 });
 
-export const storageCheckConfigExtender: ConfigExtender = (
+export const storageVaultConfigExtender: ConfigExtender = (
   config,
   userConfig
 ) => {
   const defaultConfig = getDefaultConfig();
+  if (userConfig.storageVault !== undefined) {
+    const customConfig = cloneDeep(userConfig.storageVault);
 
-  if (userConfig.storageCheck !== undefined) {
-    const customConfig = cloneDeep(userConfig.storageCheck);
-
-    config.storageCheck = {
-      ...defaultConfig,
-      ...customConfig,
-    };
+    config.storageVault = deepmerge(
+      defaultConfig,
+      customConfig
+    ) as StorageVaultConfig;
   } else {
-    config.storageCheck = defaultConfig as StorageCheckConfig;
+    config.storageVault = defaultConfig;
   }
 };

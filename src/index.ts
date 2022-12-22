@@ -1,34 +1,41 @@
-import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
-import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
-import { lazyObject } from "hardhat/plugins";
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { storageCheckConfigExtender } from "./config";
-import { TASK_STORAGE_CHECK } from "./constants";
-import { StorageCheck } from "./StorageCheck";
-import { storageCheckCompileAction } from "./tasks/compile";
+import { extendConfig, task, types } from "hardhat/config";
+
+import { storageVaultConfigExtender } from "./config";
+import { TASK_STORAGE_CHECK, TASK_STORAGE_LOCK } from "./constants";
 import { storageCheckAction } from "./tasks/storageCheck";
+import { storageLockAction } from "./tasks/storageLock";
 import "./type-extensions";
 
-extendConfig(storageCheckConfigExtender);
+extendConfig(storageVaultConfigExtender);
 
-extendEnvironment((hre: HardhatRuntimeEnvironment) => {
-  hre.storageCheck = lazyObject(() => new StorageCheck(hre));
-});
-
+// TODO: --continue-on-error flag
+// TODO: --max-error-limit optional param
 task(TASK_STORAGE_CHECK)
+  .addOptionalParam(
+    "storePath",
+    "Use a specific JSON file as a storage store.",
+    undefined,
+    types.inputFile
+  )
+  .addFlag("compile", "Compile with Hardhat before running this task.")
+  .setDescription("Check the storage layout of contracts.")
+  .setAction(storageCheckAction);
+
+task(TASK_STORAGE_LOCK)
   .addOptionalVariadicPositionalParam(
-    "contractFqns",
-    "Fully Qualified Names of the contract files.",
+    "excludeContracts",
+    "Fully qualified name of contracts to ignore.",
     undefined,
     types.string
   )
-  .addFlag("noCompile", "Don't compile before running this task.")
-  .setDescription("Check the storage layout of any/all existing contracts.")
-  .setAction(storageCheckAction);
-
-task(TASK_COMPILE)
-  .addFlag(
-    "noStorageCheck",
-    "Don't run Storage Check after running this task, even if storageCheck.runOnCompile option is true"
+  .addOptionalParam(
+    "storeName",
+    "Create or update a specific JSON file to save the storage store.",
+    undefined,
+    types.string
   )
-  .setAction(storageCheckCompileAction);
+  .addFlag("prettify", "Save the file by formatting.")
+  .addFlag("override", "Override if there is a store file with the same name.")
+  .addFlag("compile", "Compile with Hardhat before running this task.")
+  .setDescription("Create or update the new storage store of contracts.")
+  .setAction(storageLockAction);

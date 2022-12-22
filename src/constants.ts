@@ -1,5 +1,9 @@
-export const PLUGIN_NAME = "hardhat-storage-check";
+export const PLUGIN_NAME = "hardhat-storage-vault";
 export const TASK_STORAGE_CHECK = "storage-check";
-export const DEFAULT_CONFIG_PATH = "storage-check.json";
-export const DEFAULT_NO_COMPILE = false;
-export const DEFAULT_RUN_ON_COMPILE = false;
+export const TASK_STORAGE_LOCK = "storage-lock";
+export const DEFAULT_STORE_PATH = "storage-store.json";
+export const DEFAULT_EXCLUDE_CONTRACTS = [];
+export const DEFAULT_STORE_NAME = "storage-store-lock.json";
+export const DEFAULT_PRETTIFY = false;
+export const DEFAULT_OVERRIDE = false;
+export const DEFAULT_COMPILE = false;
