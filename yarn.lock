@@ -1432,12 +1432,13 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
-hardhat-finder@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-1.0.1.tgz#465dacae46fb2fbf32013a6d2ffbb1e5056b66d3"
-  integrity sha512-p2tGbFUoAbbLo0PtA9WWmZaPkIZ7RRI1WB2iZIVICdRhZI8McXLgluNAf5lifruYh/7L71p4LUdpiPNbKae+nQ==
+hardhat-finder@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-1.1.1.tgz#00cdfd0fe3e4e19e7fbf4bdd17527bff6e9e7ff8"
+  integrity sha512-7Qsjc+9QjFwo1NgjKGEIdBJgsLrhRWCNo2ennp0LP+4WqIb7zfmAo4jfcBTBBOVWXzcLgCzrcGnNKIv+5JWTXQ==
   dependencies:
     chalk "^4.1.2"
+    deepmerge "^4.2.2"
     lodash "^4.17.21"
 
 hardhat@^2.0.4:

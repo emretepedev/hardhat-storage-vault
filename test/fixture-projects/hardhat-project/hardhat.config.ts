@@ -13,12 +13,6 @@ const config: HardhatUserConfig = {
       storePath: "storage-store.json",
     },
   },
-  finder: {
-    contract: {
-      path: "contracts/Example.sol",
-      name: "Example",
-    },
-  },
 };
 
 export default config;

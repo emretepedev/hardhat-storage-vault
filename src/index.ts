@@ -9,7 +9,6 @@ import "./type-extensions";
 extendConfig(storageVaultConfigExtender);
 
 // TODO: --continue-on-error flag
-// TODO: --max-error-limit optional param
 task(TASK_STORAGE_CHECK)
   .addOptionalParam(
     "storePath",
