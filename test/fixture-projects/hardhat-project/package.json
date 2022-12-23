@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "hardhat": "../../../node_modules/.bin/hardhat"
+  }
+}
