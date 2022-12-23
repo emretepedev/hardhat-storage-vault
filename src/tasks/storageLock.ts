@@ -1,15 +1,16 @@
 import { existsSync, writeFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
+import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType, Artifacts } from "hardhat/types";
 import { basename, normalize } from "path";
 
+import { PLUGIN_NAME } from "../constants";
 import type {
   StorageLockTaskArguments,
-  StorageVaultConfig,
   StorageVaultData,
+  StorageVaultLockConfig,
 } from "../types";
 import {
-  useHardhatPluginError,
   useSuccessConsole,
   useWarningConsole,
   validateFullyQualifiedNames,
@@ -17,13 +18,13 @@ import {
 
 // TODO: investigate to hardhat artifact cache
 export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
-  { excludeContracts, storeName, prettify, override, compile },
+  { excludeContracts, storeFile, prettify, override, compile },
   { config, run, artifacts, finder }
 ) => {
-  ({ excludeContracts, storeName, prettify, override, compile } =
-    await prepareTaskArguments(config.storageVault, {
+  ({ excludeContracts, storeFile, prettify, override, compile } =
+    await prepareTaskArguments(config.storageVault.lock, {
       excludeContracts,
-      storeName,
+      storeFile,
       prettify,
       override,
       compile,
@@ -31,7 +32,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
 
   await validateTaskArguments(artifacts, {
     excludeContracts,
-    storeName,
+    storeFile,
   });
 
   if (compile) {
@@ -46,7 +47,11 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   try {
     fullyQualifiedNames = await artifacts.getAllFullyQualifiedNames();
   } catch (error: any) {
-    useHardhatPluginError(error, true);
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\n${error?.message || String(error)}`,
+      error
+    );
   }
 
   fullyQualifiedNames = fullyQualifiedNames.filter(
@@ -65,57 +70,63 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
     }
   }
 
-  if (override || !existsSync(storeName)) {
+  if (override || !existsSync(storeFile)) {
     try {
       writeFileSync(
-        storeName,
+        storeFile,
         JSON.stringify(data, null, prettify ? "\t" : "")
       );
     } catch (error: any) {
-      useHardhatPluginError(error, true);
+      throw new HardhatPluginError(
+        PLUGIN_NAME,
+        `\n${error?.message || String(error)}`,
+        error
+      );
     }
   } else {
-    useHardhatPluginError(
-      `There is already a file with this name: '${storeName}'.\n` +
-        "Run this task with --override or choose a different store name."
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\nThere is already a file with this name: '${storeFile}'.\n` +
+        "Run this task with --override or choose a different store file name."
     );
   }
 
-  useSuccessConsole(`Create ${config.storageVault.lock.storeName} file.`);
+  useSuccessConsole(`Create ${config.storageVault.lock.storeFile} file.`);
 };
 
 const prepareTaskArguments = async (
-  storageVaultConfig: StorageVaultConfig,
+  storageVaultLockConfig: StorageVaultLockConfig,
   {
     excludeContracts,
-    storeName,
+    storeFile,
     prettify,
     override,
     compile,
-  }: Partial<StorageLockTaskArguments>
+  }: StorageLockTaskArguments
 ) => {
   return {
-    excludeContracts: (excludeContracts ||=
-      storageVaultConfig.lock.excludeContracts),
-    storeName: basename(
-      normalize((storeName ||= storageVaultConfig.lock.storeName))
+    excludeContracts:
+      excludeContracts || storageVaultLockConfig.excludeContracts,
+    storeFile: basename(
+      normalize(storeFile || storageVaultLockConfig.storeFile)
     ),
-    prettify: (prettify ||= storageVaultConfig.lock.prettify),
-    override: (override ||= storageVaultConfig.lock.override),
-    compile: (compile ||= storageVaultConfig.lock.compile),
+    prettify: prettify || storageVaultLockConfig.prettify,
+    override: override || storageVaultLockConfig.override,
+    compile: compile || storageVaultLockConfig.compile,
   };
 };
 
 const validateTaskArguments = async (
   artifacts: Artifacts,
-  { excludeContracts, storeName }: Partial<StorageLockTaskArguments>
+  { excludeContracts, storeFile }: StorageLockTaskArguments
 ) => {
   await validateFullyQualifiedNames(artifacts, excludeContracts!!);
   const regexp = new RegExp(/^.+\.json$/, "");
-  if (!regexp.test(storeName!!)) {
-    useHardhatPluginError(
-      `The unsupported file extension for storage store path: '${storeName}'.\n` +
-        `The storage store must be a JSON file.`
+  if (!regexp.test(storeFile!!)) {
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\nThe unsupported file extension for storage store file: '${storeFile}'.\n` +
+        "The storage store must be a JSON file."
     );
   }
 };

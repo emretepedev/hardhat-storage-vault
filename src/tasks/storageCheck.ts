@@ -1,14 +1,15 @@
 import { readFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
+import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
 
+import { PLUGIN_NAME } from "../constants";
 import type {
   StorageCheckTaskArguments,
-  StorageVaultConfig,
+  StorageVaultCheckConfig,
   StorageVaultData,
 } from "../types";
 import {
-  useHardhatPluginError,
   useSuccessConsole,
   useWarningConsole,
   validateFullyQualifiedNames,
@@ -18,10 +19,13 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   { storePath, compile },
   { config, run, artifacts, finder }
 ) => {
-  ({ storePath, compile } = await prepareTaskArguments(config.storageVault, {
-    storePath,
-    compile,
-  }));
+  ({ storePath, compile } = await prepareTaskArguments(
+    config.storageVault.check,
+    {
+      storePath,
+      compile,
+    }
+  ));
 
   validateTaskArguments({
     storePath,
@@ -56,8 +60,9 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
       !finder.getStorageLayout() &&
       Object.keys(storageVaultData[fullyQualifiedName]).length
     ) {
-      useHardhatPluginError(
-        `No storage layout of the contract but wants it to storage store file! Try adding --compile flag or compiling with Hardhat before running this task.\n` +
+      throw new HardhatPluginError(
+        PLUGIN_NAME,
+        "\nNo storage layout of the contract but wants it to storage store file! Try adding --compile flag or compiling with Hardhat before running this task.\n" +
           `  Contract path: ${contractPath}\n` +
           `  Contract name: ${contractName}`
       );
@@ -68,8 +73,9 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
       const slot = storageVaultData[fullyQualifiedName][item!!.label].value;
       if (undefined !== slot) {
         if (item!!.slot !== slot) {
-          useHardhatPluginError(
-            `Invalid slot value!\n` +
+          throw new HardhatPluginError(
+            PLUGIN_NAME,
+            "\nInvalid slot value!\n" +
               `  Contract path: ${contractPath}\n` +
               `  Contract name: ${contractName}\n` +
               `    Slot name: ${item!!.label}\n` +
@@ -86,8 +92,9 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
     for (const entry of entries) {
       // @ts-ignore
       if (!storageVaultData[fullyQualifiedName][entry[0]].isOk) {
-        useHardhatPluginError(
-          `Missing slot value!\n` +
+        throw new HardhatPluginError(
+          PLUGIN_NAME,
+          "\nMissing slot value!\n" +
             `  Contract path: ${contractPath}\n` +
             `  Contract name: ${contractName}\n` +
             `    Slot name: ${entry[0]}\n` +
@@ -95,7 +102,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
               // @ts-ignore
               storageVaultData[fullyQualifiedName][entry[0]].value
             }\n` +
-            `    Slot (Actual): Missing on contract`
+            "    Slot (Actual): Missing on contract"
         );
       }
     }
@@ -107,22 +114,21 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
 };
 
 const prepareTaskArguments = async (
-  storageVaultConfig: StorageVaultConfig,
-  { storePath, compile }: Partial<StorageCheckTaskArguments>
+  storageVaultCheckConfig: StorageVaultCheckConfig,
+  { storePath, compile }: StorageCheckTaskArguments
 ) => {
   return {
-    storePath: (storePath ||= storageVaultConfig.check.storePath),
-    compile: (compile ||= storageVaultConfig.check.compile),
+    storePath: storePath || storageVaultCheckConfig.storePath,
+    compile: compile || storageVaultCheckConfig.compile,
   };
 };
 
-const validateTaskArguments = ({
-  storePath,
-}: Partial<StorageCheckTaskArguments>) => {
+const validateTaskArguments = ({ storePath }: StorageCheckTaskArguments) => {
   const regexp = new RegExp(/^.+\.json$/, "");
   if (!regexp.test(storePath!!)) {
-    useHardhatPluginError(
-      `The unsupported file extension for storage store path: '${storePath}'.\n` +
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\nThe unsupported file extension for storage store path: '${storePath}'.\n` +
         "The storage store must be a JSON file."
     );
   }
@@ -139,7 +145,11 @@ const useStorageVaultStore = (storePath: string): StorageVaultData => {
       );
     }
   } catch (error: any) {
-    useHardhatPluginError(error, true);
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\n${error?.message || String(error)}`,
+      error
+    );
   }
 
   return data;

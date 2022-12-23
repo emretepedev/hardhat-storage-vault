@@ -18,16 +18,12 @@ export const validateFullyQualifiedNames = async (
       }
     }
   } catch (error: any) {
-    useHardhatPluginError(error, true);
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      `\n${error?.message || String(error)}`,
+      error
+    );
   }
-};
-
-export const useHardhatPluginError = (error: any, hasParent = false) => {
-  throw new HardhatPluginError(
-    PLUGIN_NAME,
-    `\n${error.message || error}`,
-    hasParent ? error : undefined
-  );
 };
 
 export const useWarningConsole = (message: string) => {
