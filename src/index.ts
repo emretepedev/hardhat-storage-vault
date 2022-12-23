@@ -29,7 +29,7 @@ task(TASK_STORAGE_LOCK)
     types.string
   )
   .addOptionalParam(
-    "storeName",
+    "storeFile",
     "Create or update a specific JSON file to save the storage store.",
     undefined,
     types.string

@@ -7,7 +7,7 @@ import {
   DEFAULT_EXCLUDE_CONTRACTS,
   DEFAULT_OVERRIDE,
   DEFAULT_PRETTIFY,
-  DEFAULT_STORE_NAME,
+  DEFAULT_STORE_FILE,
   DEFAULT_STORE_PATH,
 } from "./constants";
 import type { StorageVaultConfig } from "./types";
@@ -19,7 +19,7 @@ const getDefaultConfig = (): StorageVaultConfig => ({
   },
   lock: {
     excludeContracts: DEFAULT_EXCLUDE_CONTRACTS,
-    storeName: DEFAULT_STORE_NAME,
+    storeFile: DEFAULT_STORE_FILE,
     prettify: DEFAULT_PRETTIFY,
     override: DEFAULT_OVERRIDE,
     compile: DEFAULT_COMPILE,

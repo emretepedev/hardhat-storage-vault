@@ -9,7 +9,7 @@ export interface StorageVaultCheckConfig {
 }
 export interface StorageVaultLockConfig {
   excludeContracts: string[];
-  storeName: string;
+  storeFile: string;
   prettify: boolean;
   override: boolean;
   compile: boolean;
@@ -22,7 +22,7 @@ export interface StorageCheckTaskArguments {
 
 export interface StorageLockTaskArguments {
   excludeContracts?: string[];
-  storeName?: string;
+  storeFile?: string;
   prettify?: boolean;
   override?: boolean;
   compile?: boolean;
