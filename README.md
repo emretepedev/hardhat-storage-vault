@@ -47,10 +47,6 @@ $ hardhat storage-lock --prettify --override
 Success in plugin hardhat-storage-vault:
 Create storage-store-lock.json file.
 
-## Environment extensions
-
-This plugin extends the Hardhat Runtime Environment by adding an `storageVault` field whose type is `Finder`.
-
 ## Configuration
 
 This plugin extends the `HardhatUserConfig`'s `FinderUserConfig` object with the `finder` field.
@@ -66,7 +62,7 @@ module.exports = {
     },
   	lock: {
       excludeContracts: ["contracts/Outdated.sol"],
-      storeName: "storage-store-lock.json",
+      storeFile: "storage-store-lock.json",
       prettify: false,
       override: false,
       compile: false,
@@ -80,7 +76,7 @@ module.exports = {
 | Check | storePath        | _String_   | storage-store.json      | Use a specific JSON file as a storage store.                     |
 | Check | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |
 | Vault | excludeContracts | _String[]_ | []                      | Fully qualified name of contracts to ignore.                     |
-| Vault | storeName        | _String_   | storage-store-lock.json | Create or update a specific JSON file to save the storage store. |
+| Vault | storeFile        | _String_   | storage-store-lock.json | Create or update a specific JSON file to save the storage store. |
 | Vault | prettify         | _Boolean_  | false                   | Save the file by formatting.                                     |
 | Vault | override         | _Boolean_  | false                   | Override if there is a store file with the same name.            |
 | Vault | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |
