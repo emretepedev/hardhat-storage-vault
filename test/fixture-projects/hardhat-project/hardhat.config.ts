@@ -1,5 +1,7 @@
+// tslint:disable no-implicit-dependencies
 import "hardhat-finder";
 import type { HardhatUserConfig } from "hardhat/types";
+// tslint:enable no-implicit-dependencies
 
 import "../../../src/index";
 
