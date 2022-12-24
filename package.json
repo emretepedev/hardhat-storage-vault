@@ -26,7 +26,8 @@
     "watch": "tsc -w",
     "prepublishOnly": "npm run build",
     "storage-check": "cd ./test/fixture-projects/hardhat-project/ && yarn run hardhat storage-check",
-    "storage-lock": "cd ./test/fixture-projects/hardhat-project/ && yarn run hardhat storage-lock"
+    "storage-lock": "cd ./test/fixture-projects/hardhat-project/ && yarn run hardhat storage-lock",
+    "test-hardhat": "cd ./test/fixture-projects/hardhat-project/ && yarn run hardhat"
   },
   "files": [
     "dist/src/",
