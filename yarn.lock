@@ -1432,10 +1432,10 @@ graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
-hardhat-finder@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-1.1.1.tgz#00cdfd0fe3e4e19e7fbf4bdd17527bff6e9e7ff8"
-  integrity sha512-7Qsjc+9QjFwo1NgjKGEIdBJgsLrhRWCNo2ennp0LP+4WqIb7zfmAo4jfcBTBBOVWXzcLgCzrcGnNKIv+5JWTXQ==
+hardhat-finder@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-2.0.0.tgz#28400b95aabbe9a69a87098c53f971da68af674d"
+  integrity sha512-KpHsYLPZI8hSe7c6BpKwRx+dcnx1LqcFNAv5Pu4OZygMcgj9WfyWIe4/Z3XofigRTYyAWTaBcDYLq/aXA7CPDQ==
   dependencies:
     chalk "^4.1.2"
     deepmerge "^4.2.2"
