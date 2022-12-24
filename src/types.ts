@@ -5,19 +5,16 @@ export interface StorageVaultConfig {
 
 export interface StorageVaultCheckConfig {
   storePath: string;
-  compile: boolean;
 }
 export interface StorageVaultLockConfig {
   excludeContracts: string[];
   storeFile: string;
   prettify: boolean;
   override: boolean;
-  compile: boolean;
 }
 
 export interface StorageCheckTaskArguments {
   storePath?: string;
-  compile?: boolean;
 }
 
 export interface StorageLockTaskArguments {
@@ -25,7 +22,6 @@ export interface StorageLockTaskArguments {
   storeFile?: string;
   prettify?: boolean;
   override?: boolean;
-  compile?: boolean;
 }
 
 // TODO: change to this structure

@@ -74,9 +74,7 @@ module.exports = {
 | Task  | Option           | Type       | Default                 | Description                                                      |
 | ----- | ---------------- | ---------- | ----------------------- | ---------------------------------------------------------------- |
 | Check | storePath        | _String_   | storage-store.json      | Use a specific JSON file as a storage store.                     |
-| Check | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |
 | Vault | excludeContracts | _String[]_ | []                      | Fully qualified name of contracts to ignore.                     |
 | Vault | storeFile        | _String_   | storage-store-lock.json | Create or update a specific JSON file to save the storage store. |
 | Vault | prettify         | _Boolean_  | false                   | Save the file by formatting.                                     |
 | Vault | override         | _Boolean_  | false                   | Override if there is a store file with the same name.            |
-| Vault | compile          | _Boolean_  | false                   | Compile with Hardhat before running this task.                   |

@@ -6,4 +6,3 @@ export const DEFAULT_EXCLUDE_CONTRACTS = [];
 export const DEFAULT_STORE_FILE = "storage-store-lock.json";
 export const DEFAULT_PRETTIFY = false;
 export const DEFAULT_OVERRIDE = false;
-export const DEFAULT_COMPILE = false;

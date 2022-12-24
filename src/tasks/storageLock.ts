@@ -10,24 +10,19 @@ import type {
   StorageVaultData,
   StorageVaultLockConfig,
 } from "../types";
-import {
-  useSuccessConsole,
-  useWarningConsole,
-  validateFullyQualifiedNames,
-} from "../utils";
+import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
 
 // TODO: investigate to hardhat artifact cache
 export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
-  { excludeContracts, storeFile, prettify, override, compile },
+  { excludeContracts, storeFile, prettify, override },
   { config, run, artifacts, finder }
 ) => {
-  ({ excludeContracts, storeFile, prettify, override, compile } =
+  ({ excludeContracts, storeFile, prettify, override } =
     await prepareTaskArguments(config.storageVault.lock, {
       excludeContracts,
       storeFile,
       prettify,
       override,
-      compile,
     }));
 
   await validateTaskArguments(artifacts, {
@@ -35,13 +30,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
     storeFile,
   });
 
-  if (compile) {
-    await run(TASK_COMPILE, { quiet: true });
-  } else {
-    useWarningConsole(
-      "If artifacts are not found try adding --compile flag or compiling with Hardhat before running this task."
-    );
-  }
+  await run(TASK_COMPILE);
 
   let fullyQualifiedNames: string[] = [];
   try {
@@ -96,13 +85,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
 
 const prepareTaskArguments = async (
   storageVaultLockConfig: StorageVaultLockConfig,
-  {
-    excludeContracts,
-    storeFile,
-    prettify,
-    override,
-    compile,
-  }: StorageLockTaskArguments
+  { excludeContracts, storeFile, prettify, override }: StorageLockTaskArguments
 ) => {
   return {
     excludeContracts:
@@ -112,7 +95,6 @@ const prepareTaskArguments = async (
     ),
     prettify: prettify || storageVaultLockConfig.prettify,
     override: override || storageVaultLockConfig.override,
-    compile: compile || storageVaultLockConfig.compile,
   };
 };
 

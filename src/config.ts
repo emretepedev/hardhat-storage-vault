@@ -3,7 +3,6 @@ import type { ConfigExtender } from "hardhat/types";
 import { cloneDeep } from "lodash";
 
 import {
-  DEFAULT_COMPILE,
   DEFAULT_EXCLUDE_CONTRACTS,
   DEFAULT_OVERRIDE,
   DEFAULT_PRETTIFY,
@@ -15,14 +14,12 @@ import type { StorageVaultConfig } from "./types";
 const getDefaultConfig = (): StorageVaultConfig => ({
   check: {
     storePath: DEFAULT_STORE_PATH,
-    compile: DEFAULT_COMPILE,
   },
   lock: {
     excludeContracts: DEFAULT_EXCLUDE_CONTRACTS,
     storeFile: DEFAULT_STORE_FILE,
     prettify: DEFAULT_PRETTIFY,
     override: DEFAULT_OVERRIDE,
-    compile: DEFAULT_COMPILE,
   },
 });
 

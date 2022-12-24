@@ -16,7 +16,6 @@ task(TASK_STORAGE_CHECK)
     undefined,
     types.inputFile
   )
-  .addFlag("compile", "Compile with Hardhat before running this task.")
   .setDescription("Check the storage layout of contracts.")
   .setAction(storageCheckAction);
 
@@ -35,6 +34,5 @@ task(TASK_STORAGE_LOCK)
   )
   .addFlag("prettify", "Save the file by formatting.")
   .addFlag("override", "Override if there is a store file with the same name.")
-  .addFlag("compile", "Compile with Hardhat before running this task.")
   .setDescription("Create or update the new storage store of contracts.")
   .setAction(storageLockAction);

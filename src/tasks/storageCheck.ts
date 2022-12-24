@@ -9,35 +9,21 @@ import type {
   StorageVaultCheckConfig,
   StorageVaultData,
 } from "../types";
-import {
-  useSuccessConsole,
-  useWarningConsole,
-  validateFullyQualifiedNames,
-} from "../utils";
+import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
 
 export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
-  { storePath, compile },
+  { storePath },
   { config, run, artifacts, finder }
 ) => {
-  ({ storePath, compile } = await prepareTaskArguments(
-    config.storageVault.check,
-    {
-      storePath,
-      compile,
-    }
-  ));
+  ({ storePath } = await prepareTaskArguments(config.storageVault.check, {
+    storePath,
+  }));
 
   validateTaskArguments({
     storePath,
   });
 
-  if (compile) {
-    await run(TASK_COMPILE, { quiet: true });
-  } else {
-    useWarningConsole(
-      "If artifacts are not found try adding --compile flag or compiling with Hardhat before running this task."
-    );
-  }
+  await run(TASK_COMPILE);
 
   const storageVaultData = useStorageVaultStore(storePath);
   const fullyQualifiedNames = Object.keys(storageVaultData!!);
@@ -115,11 +101,10 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
 
 const prepareTaskArguments = async (
   storageVaultCheckConfig: StorageVaultCheckConfig,
-  { storePath, compile }: StorageCheckTaskArguments
+  { storePath }: StorageCheckTaskArguments
 ) => {
   return {
     storePath: storePath || storageVaultCheckConfig.storePath,
-    compile: compile || storageVaultCheckConfig.compile,
   };
 };
 
