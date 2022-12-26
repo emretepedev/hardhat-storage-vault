@@ -57,7 +57,7 @@
   },
   "peerDependencies": {
     "hardhat": "^2.0.4",
-    "hardhat-finder": "1.1.1"
+    "hardhat-finder": "^2.0.0"
   },
   "dependencies": {
     "chalk": "^4.1.2",
