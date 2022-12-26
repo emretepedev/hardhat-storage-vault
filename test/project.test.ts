@@ -39,8 +39,9 @@ describe("Integration tests", function () {
         await this.hre.run(TASK_STORAGE_CHECK, {
           storePath: "error-storage-store.json",
         });
-      } catch (error) {
+      } catch (error: any) {
         assert.instanceOf(error, HardhatPluginError);
+        expect(error.message).include("Invalid slot value");
       }
     });
   });
