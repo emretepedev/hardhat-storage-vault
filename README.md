@@ -39,14 +39,14 @@ import "hardhat-storage-vault";
 This plugin adds `storage-check` and `storage-lock` task to Hardhat:
 
 ```
-Usage: hardhat [GLOBAL OPTIONS] storage-lock [OPTIONS]
+Usage: hardhat [GLOBAL OPTIONS] storage-lock [--overwrite] [--prettify] [--store-file <STRING>] [...excludeContracts]
 $ hardhat storage-lock --prettify --overwrite
 
 Success in plugin hardhat-storage-vault:
 Created storage-store-lock.json file.
 
 
-Usage: hardhat [GLOBAL OPTIONS] storage-check [OPTIONS]
+Usage: hardhat [GLOBAL OPTIONS] storage-check [--store-file <INPUTFILE>]
 $ hardhat storage-check --store-file custom-storage-store-lock.json
 
 Error in plugin hardhat-storage-vault:
