@@ -71,7 +71,14 @@ module.exports = {
       storeFile: "storage-store-lock.json",
     },
     lock: {
-      excludeContracts: ["contracts/Example.sol"],
+      excludeContracts: [
+        "^contracts-exposed/" // exclude by directory
+        "^contracts/Example.sol" // exclude by file
+        "Example$" // exclude by contract name
+        "^contracts/Example.sol:Example$" // exclude by fully qualified name
+        "Example.+\\.sol" // regex search (exclude ExampleTwo.sol, ExampleThree.sol but not Example.sol)
+        "Example.*\\.sol" // regex search (exclude Example.sol, ExampleTwo.sol, ExampleThree.sol)
+      ],
       storeFile: "storage-store-lock.json",
       prettify: false,
       overwrite: false,
@@ -83,7 +90,7 @@ module.exports = {
 | Task  | Option           | Type       | Default                 | Description                                                      |
 | ----- | ---------------- | ---------- | ----------------------- | ---------------------------------------------------------------- |
 | Check | storeFile        | _String_   | storage-store-lock.json | Use a specific JSON file as a storage store.                     |
-| Vault | excludeContracts | _String[]_ | []                      | Fully qualified name of contracts to ignore.                     |
+| Vault | excludeContracts | _String[]_ | []                      | Regex string to ignore contracts.                                |
 | Vault | storeFile        | _String_   | storage-store-lock.json | Create or update a specific JSON file to save the storage store. |
 | Vault | prettify         | _Boolean_  | false                   | Save the file by formatting.                                     |
 | Vault | overwrite        | _Boolean_  | false                   | Overwrite if there is a store file with the same name.           |

@@ -44,9 +44,17 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
     );
   }
 
-  fullyQualifiedNames = fullyQualifiedNames.filter(
-    (item) => !excludeContracts!!.includes(item)
-  );
+  fullyQualifiedNames = fullyQualifiedNames.filter((item) => {
+    for (const excludeContract of excludeContracts!!) {
+      const isMatch = new RegExp(excludeContract, "g").test(item);
+
+      if (isMatch) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 
   const data: StorageVaultData = {};
   for (const fullyQualifiedName of fullyQualifiedNames) {
@@ -103,7 +111,7 @@ const validateTaskArguments = async (
   artifacts: Artifacts,
   { excludeContracts, storeFile }: StorageLockTaskArguments
 ) => {
-  await validateFullyQualifiedNames(artifacts, excludeContracts!!);
+  // await validateFullyQualifiedNames(artifacts, excludeContracts!!);
   const regexp = new RegExp(/^.+\.json$/, "");
   if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(

@@ -23,7 +23,7 @@ task(TASK_STORAGE_CHECK)
 task(TASK_STORAGE_LOCK)
   .addOptionalVariadicPositionalParam(
     "excludeContracts",
-    "Fully qualified name of contracts to ignore.",
+    "Regex string to ignore contracts.",
     undefined,
     types.string
   )
