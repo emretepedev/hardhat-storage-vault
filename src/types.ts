@@ -4,24 +4,24 @@ export interface StorageVaultConfig {
 }
 
 export interface StorageVaultCheckConfig {
-  storePath: string;
+  storeFile: string;
 }
 export interface StorageVaultLockConfig {
   excludeContracts: string[];
   storeFile: string;
   prettify: boolean;
-  override: boolean;
+  overwrite: boolean;
 }
 
 export interface StorageCheckTaskArguments {
-  storePath?: string;
+  storeFile?: string;
 }
 
 export interface StorageLockTaskArguments {
   excludeContracts?: string[];
   storeFile?: string;
   prettify?: boolean;
-  override?: boolean;
+  overwrite?: boolean;
 }
 
 // TODO: change to this structure

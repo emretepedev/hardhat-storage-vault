@@ -27,7 +27,7 @@ describe("Integration tests", function () {
 
     it("Should success when use storage-store.json", async function () {
       await this.hre.run(TASK_STORAGE_CHECK, {
-        storePath: "storage-store.json",
+        storeFile: "storage-store.json",
       });
       expect(getConsoleMessage(2)).to.include(
         `Success in plugin ${PLUGIN_NAME}`
@@ -37,11 +37,22 @@ describe("Integration tests", function () {
     it("Should give error when use error-storage-store.json", async function () {
       try {
         await this.hre.run(TASK_STORAGE_CHECK, {
-          storePath: "error-storage-store.json",
+          storeFile: "error-storage-store.json",
         });
       } catch (error: any) {
         assert.instanceOf(error, HardhatPluginError);
         expect(error.message).include("Invalid slot value");
+      }
+    });
+
+    it("Should give error when use missing-storage-store.json", async function () {
+      try {
+        await this.hre.run(TASK_STORAGE_CHECK, {
+          storeFile: "missing-storage-store.json",
+        });
+      } catch (error: any) {
+        assert.instanceOf(error, HardhatPluginError);
+        expect(error.message).include("Missing slot value");
       }
     });
   });
@@ -49,9 +60,9 @@ describe("Integration tests", function () {
   describe("HardhatConfig extension", function () {
     useEnvironment("hardhat-project");
 
-    it("Should add the 'storePath' to the config", function () {
+    it("Should add the 'storeFile' to the config", function () {
       assert.equal(
-        this.hre.config.storageVault.check.storePath,
+        this.hre.config.storageVault.check.storeFile,
         "storage-store.json"
       );
     });

@@ -10,7 +10,7 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   storageVault: {
     check: {
-      storePath: "storage-store.json",
+      storeFile: "storage-store.json",
     },
   },
 };

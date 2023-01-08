@@ -4,22 +4,21 @@ import { cloneDeep } from "lodash";
 
 import {
   DEFAULT_EXCLUDE_CONTRACTS,
-  DEFAULT_OVERRIDE,
+  DEFAULT_OVERWRITE,
   DEFAULT_PRETTIFY,
   DEFAULT_STORE_FILE,
-  DEFAULT_STORE_PATH,
 } from "./constants";
 import type { StorageVaultConfig } from "./types";
 
 const getDefaultConfig = (): StorageVaultConfig => ({
   check: {
-    storePath: DEFAULT_STORE_PATH,
+    storeFile: DEFAULT_STORE_FILE,
   },
   lock: {
     excludeContracts: DEFAULT_EXCLUDE_CONTRACTS,
     storeFile: DEFAULT_STORE_FILE,
     prettify: DEFAULT_PRETTIFY,
-    override: DEFAULT_OVERRIDE,
+    overwrite: DEFAULT_OVERWRITE,
   },
 });
 

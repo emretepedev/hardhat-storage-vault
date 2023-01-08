@@ -13,16 +13,17 @@ import type {
 import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
 
 // TODO: investigate to hardhat artifact cache
+// TODO: change file name to storage-lock (check other repos!)
 export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
-  { excludeContracts, storeFile, prettify, override },
+  { excludeContracts, storeFile, prettify, overwrite },
   { config, run, artifacts, finder }
 ) => {
-  ({ excludeContracts, storeFile, prettify, override } =
+  ({ excludeContracts, storeFile, prettify, overwrite } =
     await prepareTaskArguments(config.storageVault.lock, {
       excludeContracts,
       storeFile,
       prettify,
-      override,
+      overwrite,
     }));
 
   await validateTaskArguments(artifacts, {
@@ -50,7 +51,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   const data: StorageVaultData = {};
   for (const fullyQualifiedName of fullyQualifiedNames) {
     const [contractPath, contractName] = fullyQualifiedName.split(":");
-    await finder.setFor(contractPath, contractName);
+    await finder.setFor(contractPath, contractName, false);
     const storage = finder.getStorageLayout()!!.storage;
     data[fullyQualifiedName] = {};
 
@@ -59,7 +60,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
     }
   }
 
-  if (override || !existsSync(storeFile)) {
+  if (overwrite || !existsSync(storeFile)) {
     try {
       writeFileSync(
         storeFile,
@@ -75,17 +76,17 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   } else {
     throw new HardhatPluginError(
       PLUGIN_NAME,
-      `\nThere is already a file with this name: '${storeFile}'.\n` +
-        "Run this task with --override or choose a different store file name."
+      `\nThere is a file with this name: '${storeFile}'.\n` +
+        "Run this task with --overwrite or choose a different store file name."
     );
   }
 
-  useSuccessConsole(`Create ${config.storageVault.lock.storeFile} file.`);
+  useSuccessConsole(`Created ${storeFile} file.`);
 };
 
 const prepareTaskArguments = async (
   storageVaultLockConfig: StorageVaultLockConfig,
-  { excludeContracts, storeFile, prettify, override }: StorageLockTaskArguments
+  { excludeContracts, storeFile, prettify, overwrite }: StorageLockTaskArguments
 ) => {
   return {
     excludeContracts:
@@ -94,7 +95,7 @@ const prepareTaskArguments = async (
       normalize(storeFile || storageVaultLockConfig.storeFile)
     ),
     prettify: prettify || storageVaultLockConfig.prettify,
-    override: override || storageVaultLockConfig.override,
+    overwrite: overwrite || storageVaultLockConfig.overwrite,
   };
 };
 

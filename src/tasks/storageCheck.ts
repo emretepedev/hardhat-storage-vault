@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { readFileSync, existsSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
@@ -12,43 +12,51 @@ import type {
 import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
 
 export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
-  { storePath },
+  { storeFile },
   { config, run, artifacts, finder }
 ) => {
-  ({ storePath } = await prepareTaskArguments(config.storageVault.check, {
-    storePath,
+  ({ storeFile } = await prepareTaskArguments(config.storageVault.check, {
+    storeFile,
   }));
 
   validateTaskArguments({
-    storePath,
+    storeFile,
   });
+
+  if (!existsSync(storeFile)) {
+    throw new HardhatPluginError(
+      PLUGIN_NAME,
+      "\nThe store file not found!\n" +
+        "Try creating a store file or running storage-lock task with `hardhat storage-lock` command before running this task.\n"
+    );
+  }
 
   await run(TASK_COMPILE);
 
-  const storageVaultData = useStorageVaultStore(storePath);
-  const fullyQualifiedNames = Object.keys(storageVaultData!!);
+  const storageVaultStore = useStorageVaultStore(storeFile);
+  const fullyQualifiedNames = Object.keys(storageVaultStore);
   await validateFullyQualifiedNames(artifacts, fullyQualifiedNames);
 
   for (const fullyQualifiedName of fullyQualifiedNames) {
-    const entries = Object.entries(storageVaultData[fullyQualifiedName]);
+    const entries = Object.entries(storageVaultStore[fullyQualifiedName]);
     for (const entry of entries) {
       // @ts-ignore
-      storageVaultData[fullyQualifiedName][entry[0]] = {
+      storageVaultStore[fullyQualifiedName][entry[0]] = {
         value: entry[1],
         isOk: false,
       };
     }
 
     const [contractPath, contractName] = fullyQualifiedName.split(":");
-    await finder.setFor(contractPath, contractName);
+    await finder.setFor(contractPath, contractName, false);
     const storage = finder.getStorageLayout()!!.storage;
     if (
       !finder.getStorageLayout() &&
-      Object.keys(storageVaultData[fullyQualifiedName]).length
+      Object.keys(storageVaultStore[fullyQualifiedName]).length
     ) {
       throw new HardhatPluginError(
         PLUGIN_NAME,
-        "\nNo storage layout of the contract but wants it to storage store file! Try adding --compile flag or compiling with Hardhat before running this task.\n" +
+        "\nNo storage layout of the contract but wants it to storage store file! Try compiling with Hardhat before running this task.\n" +
           `  Contract path: ${contractPath}\n` +
           `  Contract name: ${contractName}`
       );
@@ -56,7 +64,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
 
     for (const item of storage) {
       // @ts-ignore
-      const slot = storageVaultData[fullyQualifiedName][item!!.label].value;
+      const slot = storageVaultStore[fullyQualifiedName][item!!.label].value;
       if (undefined !== slot) {
         if (item!!.slot !== slot) {
           throw new HardhatPluginError(
@@ -71,13 +79,13 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
         }
 
         // @ts-ignore
-        storageVaultData[fullyQualifiedName][item!!.label].isOk = true;
+        storageVaultStore[fullyQualifiedName][item!!.label].isOk = true;
       }
     }
 
     for (const entry of entries) {
       // @ts-ignore
-      if (!storageVaultData[fullyQualifiedName][entry[0]].isOk) {
+      if (!storageVaultStore[fullyQualifiedName][entry[0]].isOk) {
         throw new HardhatPluginError(
           PLUGIN_NAME,
           "\nMissing slot value!\n" +
@@ -86,7 +94,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
             `    Slot name: ${entry[0]}\n` +
             `    Slot (Expected): ${
               // @ts-ignore
-              storageVaultData[fullyQualifiedName][entry[0]].value
+              storageVaultStore[fullyQualifiedName][entry[0]].value
             }\n` +
             "    Slot (Actual): Missing on contract"
         );
@@ -95,37 +103,39 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   }
 
   useSuccessConsole(
-    `Storage layout of contract(s) are compatible with your ${config.storageVault.check.storePath} file.`
+    `Storage layout of contract(s) are compatible with your ${storeFile} file.`
   );
 };
 
 const prepareTaskArguments = async (
   storageVaultCheckConfig: StorageVaultCheckConfig,
-  { storePath }: StorageCheckTaskArguments
+  { storeFile }: StorageCheckTaskArguments
 ) => {
   return {
-    storePath: storePath || storageVaultCheckConfig.storePath,
+    storeFile: storeFile || storageVaultCheckConfig.storeFile,
   };
 };
 
-const validateTaskArguments = ({ storePath }: StorageCheckTaskArguments) => {
+const validateTaskArguments = ({ storeFile }: StorageCheckTaskArguments) => {
   const regexp = new RegExp(/^.+\.json$/, "");
-  if (!regexp.test(storePath!!)) {
+  if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(
       PLUGIN_NAME,
-      `\nThe unsupported file extension for storage store path: '${storePath}'.\n` +
+      `\nThe unsupported file extension for storage store path: '${storeFile}'.\n` +
         "The storage store must be a JSON file."
     );
   }
 };
 
-const useStorageVaultStore = (storePath: string): StorageVaultData => {
+const useStorageVaultStore = (storeFile: string): StorageVaultData => {
   let data: StorageVaultData = {};
   try {
-    data = JSON.parse(readFileSync(storePath, { encoding: "utf-8" }));
+    data = JSON.parse(readFileSync(storeFile, { encoding: "utf-8" }));
+
     if (!data) {
-      throw new Error(
-        `Failed to load data from JSON file: ${storePath}.\n` +
+      throw new HardhatPluginError(
+        PLUGIN_NAME,
+        `\nFailed to load data from JSON file: ${storeFile}.\n` +
           "Make sure the JSON file is correct."
       );
     }

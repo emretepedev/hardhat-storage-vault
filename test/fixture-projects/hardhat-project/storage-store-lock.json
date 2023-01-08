@@ -1,10 +1,10 @@
 {
-	"contracts/Example.sol:Example": {
-		"slot0": "0",
-		"owner": "1"
-	},
-	"contracts/ExampleTwo.sol:Example": {
-		"slot0": "0",
-		"slot1": "1"
-	}
+  "contracts/Example.sol:Example": {
+    "foo": "0",
+    "owner": "1"
+  },
+  "contracts/ExampleTwo.sol:Example": {
+    "foo": "0",
+    "slot1": "1"
+  }
 }
