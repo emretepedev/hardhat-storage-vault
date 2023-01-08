@@ -11,13 +11,19 @@ export const validateFullyQualifiedNames = async (
   try {
     for (const fullyQualifiedName of fullyQualifiedNames) {
       const artifactExist = await artifacts.artifactExists(fullyQualifiedName);
+
       if (!artifactExist) {
-        throw new Error(
-          "Artifact not found. Try adding --compile flag or compiling with Hardhat before running this task"
+        throw new HardhatPluginError(
+          PLUGIN_NAME,
+          "Artifact not found. Try compiling with Hardhat before running this task"
         );
       }
     }
   } catch (error: any) {
+    if (error instanceof HardhatPluginError) {
+      throw error;
+    }
+
     throw new HardhatPluginError(
       PLUGIN_NAME,
       `\n${error?.message || String(error)}`,
