@@ -10,7 +10,7 @@ import type {
   StorageVaultData,
   StorageVaultLockConfig,
 } from "../types";
-import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
+import { useSuccessConsole } from "../utils";
 
 // TODO: investigate to hardhat artifact cache
 // TODO: change file name to storage-lock (check other repos!)
@@ -26,8 +26,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
       overwrite,
     }));
 
-  await validateTaskArguments(artifacts, {
-    excludeContracts,
+  await validateTaskArguments({
     storeFile,
   });
 
@@ -107,11 +106,9 @@ const prepareTaskArguments = async (
   };
 };
 
-const validateTaskArguments = async (
-  artifacts: Artifacts,
-  { excludeContracts, storeFile }: StorageLockTaskArguments
-) => {
-  // await validateFullyQualifiedNames(artifacts, excludeContracts!!);
+const validateTaskArguments = async ({
+  storeFile,
+}: StorageLockTaskArguments) => {
   const regexp = new RegExp(/^.+\.json$/, "");
   if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(
