@@ -9,7 +9,11 @@ import type {
   StorageVaultCheckConfig,
   StorageVaultData,
 } from "../types";
-import { useSuccessConsole, validateFullyQualifiedNames } from "../utils";
+import {
+  useSuccessConsole,
+  useWarningConsole,
+  validateFullyQualifiedNames,
+} from "../utils";
 
 export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   { storeFile },
@@ -64,7 +68,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
 
     for (const item of storage) {
       // @ts-ignore
-      const slot = storageVaultStore[fullyQualifiedName][item!!.label].value;
+      const slot = storageVaultStore[fullyQualifiedName][item!!.label]?.value;
       if (undefined !== slot) {
         if (item!!.slot !== slot) {
           throw new HardhatPluginError(
@@ -80,6 +84,15 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
 
         // @ts-ignore
         storageVaultStore[fullyQualifiedName][item!!.label].isOk = true;
+      } else {
+        useWarningConsole(
+          "Unexpected slot value!\n" +
+            "Make sure to update your store file using the `hardhat storage-lock` command.\n" +
+            `  Contract path: ${contractPath}\n` +
+            `  Contract name: ${contractName}\n` +
+            `    Slot name: ${item!!.label}\n` +
+            `    Slot (Actual): ${item!!.slot}`
+        );
       }
     }
 
