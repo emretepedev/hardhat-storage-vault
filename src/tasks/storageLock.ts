@@ -17,15 +17,17 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   { excludeContracts, storeFile, prettify, overwrite },
   { config, run, artifacts, finder }
 ) => {
-  ({ excludeContracts, storeFile, prettify, overwrite } =
-    await prepareTaskArguments(config.storageVault.lock, {
+  ({ excludeContracts, storeFile, prettify, overwrite } = prepareTaskArguments(
+    config.storageVault.lock,
+    {
       excludeContracts,
       storeFile,
       prettify,
       overwrite,
-    }));
+    }
+  ));
 
-  await validateTaskArguments({
+  validateTaskArguments({
     storeFile,
   });
 
@@ -90,7 +92,7 @@ export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   useSuccessConsole(`Created ${storeFile} file.`);
 };
 
-const prepareTaskArguments = async (
+const prepareTaskArguments = (
   storageVaultLockConfig: StorageVaultLockConfig,
   { excludeContracts, storeFile, prettify, overwrite }: StorageLockTaskArguments
 ) => {
@@ -105,9 +107,7 @@ const prepareTaskArguments = async (
   };
 };
 
-const validateTaskArguments = async ({
-  storeFile,
-}: StorageLockTaskArguments) => {
+const validateTaskArguments = ({ storeFile }: StorageLockTaskArguments) => {
   const regexp = new RegExp(/^.+\.json$/, "");
   if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(

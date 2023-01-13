@@ -18,7 +18,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   { storeFile },
   { config, run, artifacts, finder }
 ) => {
-  ({ storeFile } = await prepareTaskArguments(config.storageVault.check, {
+  ({ storeFile } = prepareTaskArguments(config.storageVault.check, {
     storeFile,
   }));
 
@@ -119,7 +119,7 @@ export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   );
 };
 
-const prepareTaskArguments = async (
+const prepareTaskArguments = (
   storageVaultCheckConfig: StorageVaultCheckConfig,
   { storeFile }: StorageCheckTaskArguments
 ) => {
@@ -133,7 +133,7 @@ const validateTaskArguments = ({ storeFile }: StorageCheckTaskArguments) => {
   if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(
       PLUGIN_NAME,
-      `\nThe unsupported file extension for the storage store file: '${storeFile}'.\n` +
+      `\nThe unsupported file extension for the storage store file: '${storeFile!!}'.\n` +
         "The storage store must be a JSON file."
     );
   }
