@@ -1,7 +1,7 @@
 import { existsSync, writeFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
 import { HardhatPluginError } from "hardhat/plugins";
-import type { ActionType, Artifacts } from "hardhat/types";
+import type { ActionType } from "hardhat/types";
 import { basename, normalize } from "path";
 
 import { PLUGIN_NAME } from "../constants";

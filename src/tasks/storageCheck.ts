@@ -134,7 +134,7 @@ const validateTaskArguments = ({ storeFile }: StorageCheckTaskArguments) => {
   if (!regexp.test(storeFile!!)) {
     throw new HardhatPluginError(
       PLUGIN_NAME,
-      `\nThe unsupported file extension for storage store path: '${storeFile}'.\n` +
+      `\nThe unsupported file extension for the storage store file: '${storeFile}'.\n` +
         "The storage store must be a JSON file."
     );
   }
