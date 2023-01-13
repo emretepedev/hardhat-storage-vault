@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  // "eslint.validate": ["typescript"],
+  "[json][jsonc][javascript][typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
