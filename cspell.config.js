@@ -3,7 +3,7 @@ module.exports = {
 
   language: "en",
 
-  words: [],
+  words: ["jscoverage", "esbenp"],
 
   ignoreWords: ["emre", "tepe", "emretepedev"],
 
