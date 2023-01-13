@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
+  },
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
@@ -8,7 +11,16 @@
     "outDir": "./dist",
     "strict": true,
     "rootDirs": ["./src", "./test"],
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "~": [
+        "src"
+      ],
+      "~/*": [
+        "src/*"
+      ],
+    },
   },
   "exclude": ["dist", "node_modules"],
   "include": [

@@ -2,18 +2,17 @@ import { existsSync, readFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
-
-import { PLUGIN_NAME } from "../constants";
+import { PLUGIN_NAME } from "~/constants";
 import type {
   StorageCheckTaskArguments,
   StorageVaultCheckConfig,
   StorageVaultData,
-} from "../types";
+} from "~/types";
 import {
   useSuccessConsole,
   useWarningConsole,
   validateFullyQualifiedNames,
-} from "../utils";
+} from "~/utils";
 
 export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   { storeFile },

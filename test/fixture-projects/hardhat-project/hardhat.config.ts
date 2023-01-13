@@ -2,8 +2,7 @@
 import "hardhat-finder";
 import type { HardhatUserConfig } from "hardhat/types";
 // tslint:enable no-implicit-dependencies
-
-import "../../../src/index";
+import "~/index";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.0",

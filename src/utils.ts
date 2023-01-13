@@ -1,8 +1,7 @@
 import chalk from "chalk";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { Artifacts } from "hardhat/types";
-
-import { PLUGIN_NAME } from "./constants";
+import { PLUGIN_NAME } from "~/constants";
 
 export const validateFullyQualifiedNames = async (
   artifacts: Artifacts,

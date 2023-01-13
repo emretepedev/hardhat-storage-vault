@@ -2,11 +2,13 @@
 import chai from "chai";
 import spies from "chai-spies";
 import { HardhatPluginError } from "hardhat/plugins";
-chai.use(spies);
 // tslint:enable no-implicit-dependencies
 
-import { PLUGIN_NAME, TASK_STORAGE_CHECK } from "./../src/constants";
+import { PLUGIN_NAME, TASK_STORAGE_CHECK } from "../src/constants";
+
 import { useEnvironment } from "./helpers";
+
+chai.use(spies);
 
 const expect = chai.expect;
 const assert = chai.assert;

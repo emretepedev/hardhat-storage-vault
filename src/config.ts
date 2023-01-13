@@ -1,14 +1,13 @@
 import deepmerge from "deepmerge";
 import type { ConfigExtender } from "hardhat/types";
 import { cloneDeep } from "lodash";
-
 import {
   DEFAULT_EXCLUDE_CONTRACTS,
   DEFAULT_OVERWRITE,
   DEFAULT_PRETTIFY,
   DEFAULT_STORE_FILE,
-} from "./constants";
-import type { StorageVaultConfig } from "./types";
+} from "~/constants";
+import type { StorageVaultConfig } from "~/types";
 
 const getDefaultConfig = (): StorageVaultConfig => ({
   check: {

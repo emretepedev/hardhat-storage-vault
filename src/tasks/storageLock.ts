@@ -3,14 +3,13 @@ import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
 import { basename, normalize } from "path";
-
-import { PLUGIN_NAME } from "../constants";
+import { PLUGIN_NAME } from "~/constants";
 import type {
   StorageLockTaskArguments,
   StorageVaultData,
   StorageVaultLockConfig,
-} from "../types";
-import { useSuccessConsole } from "../utils";
+} from "~/types";
+import { useSuccessConsole } from "~/utils";
 
 // TODO: investigate to hardhat artifact cache
 // TODO: change file name to storage-lock (check other repos!)

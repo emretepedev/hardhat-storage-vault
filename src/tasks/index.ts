@@ -1,6 +1,5 @@
 import { task, types } from "hardhat/config";
-
-import { TASK_STORAGE_CHECK, TASK_STORAGE_LOCK } from "../constants";
+import { TASK_STORAGE_CHECK, TASK_STORAGE_LOCK } from "~/constants";
 
 import { storageCheckAction } from "./storageCheck";
 import { storageLockAction } from "./storageLock";
