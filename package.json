@@ -1,6 +1,6 @@
 {
   "name": "hardhat-storage-vault",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Hardhat plugin to check and lock the storage layout of contracts",
   "repository": "github:emretepedev/hardhat-storage-vault",
   "author": {
