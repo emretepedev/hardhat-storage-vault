@@ -8,30 +8,40 @@ This plugin will help you avoid possible errors by checking and locking your sto
 
 ## Installation
 
-Install the plugin via `npm`:
+I recommend using npm 7 or later. If you do that, then you just need to install the plugin itself:
 
 ```bash
 npm install hardhat-storage-vault
 ```
 
-Install the plugin via `yarn`:
+If you are using an older version of npm, you'll also need to install all the packages used by `hardhat-storage-vault`.
 
 ```bash
-yarn add hardhat-storage-vault
+npm install hardhat-storage-vault hardhat-finder
+```
+
+That's also the case if you are using yarn.
+
+```bash
+yarn add hardhat-storage-vault hardhat-finder
 ```
 
 ---
+
+Import `hardhat-storage-vault` in your Hardhat config. This will make import of `hardhat-finder` redundant, so you can remove it if you want:
 
 Import the plugin in your `hardhat.config.js`:
 
 ```js
 require("hardhat-storage-vault");
+require("hardhat-finder"); // you can remove this line
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
 import "hardhat-storage-vault";
+import "hardhat-finder"; // you can remove this line
 ```
 
 ## Tasks
