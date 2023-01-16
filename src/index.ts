@@ -1,3 +1,4 @@
+import "hardhat-finder";
 import { extendConfig } from "hardhat/config";
 import { storageVaultConfigExtender } from "~/config";
 import "~/tasks";
