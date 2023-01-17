@@ -165,7 +165,7 @@ const useStorageVaultStore = (storeFile: string): StorageVaultData => {
 
 // TODO: add --continue-on-error flag
 // TODO: add --runOnCompile flag
-task(TASK_STORAGE_CHECK)
+task<StorageCheckTaskArguments>(TASK_STORAGE_CHECK)
   .addOptionalParam(
     "storeFile",
     "Use a specific JSON file as a storage store.",

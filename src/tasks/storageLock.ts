@@ -119,7 +119,7 @@ const validateTaskArguments = ({ storeFile }: StorageLockTaskArguments) => {
   }
 };
 
-task(TASK_STORAGE_LOCK)
+task<StorageLockTaskArguments>(TASK_STORAGE_LOCK)
   .addOptionalVariadicPositionalParam(
     "excludeContracts",
     "Regex string to ignore contracts.",
