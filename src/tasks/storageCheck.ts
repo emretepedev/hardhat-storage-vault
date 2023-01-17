@@ -1,8 +1,9 @@
 import { existsSync, readFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
+import { task, types } from "hardhat/config";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
-import { PLUGIN_NAME } from "~/constants";
+import { PLUGIN_NAME, TASK_STORAGE_CHECK } from "~/constants";
 import type {
   StorageCheckTaskArguments,
   StorageVaultCheckConfig,
@@ -14,7 +15,7 @@ import {
   validateFullyQualifiedNames,
 } from "~/utils";
 
-export const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
+const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
   { storeFile },
   { config, run, artifacts, finder }
 ) => {
@@ -161,3 +162,15 @@ const useStorageVaultStore = (storeFile: string): StorageVaultData => {
 
   return data;
 };
+
+// TODO: add --continue-on-error flag
+// TODO: add --runOnCompile flag
+task(TASK_STORAGE_CHECK)
+  .addOptionalParam(
+    "storeFile",
+    "Use a specific JSON file as a storage store.",
+    undefined,
+    types.inputFile
+  )
+  .setDescription("Check the storage layout of contracts.")
+  .setAction(storageCheckAction);

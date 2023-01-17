@@ -1,9 +1,10 @@
 import { existsSync, writeFileSync } from "fs";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names";
+import { task, types } from "hardhat/config";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { ActionType } from "hardhat/types";
 import { basename, normalize } from "path";
-import { PLUGIN_NAME } from "~/constants";
+import { PLUGIN_NAME, TASK_STORAGE_LOCK } from "~/constants";
 import type {
   StorageLockTaskArguments,
   StorageVaultData,
@@ -13,7 +14,7 @@ import { useSuccessConsole } from "~/utils";
 
 // TODO: investigate to hardhat artifact cache
 // TODO: change file name to storage-lock (check other repos!)
-export const storageLockAction: ActionType<StorageLockTaskArguments> = async (
+const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   { excludeContracts, storeFile, prettify, overwrite },
   { config, run, artifacts, finder }
 ) => {
@@ -117,3 +118,24 @@ const validateTaskArguments = ({ storeFile }: StorageLockTaskArguments) => {
     );
   }
 };
+
+task(TASK_STORAGE_LOCK)
+  .addOptionalVariadicPositionalParam(
+    "excludeContracts",
+    "Regex string to ignore contracts.",
+    undefined,
+    types.string
+  )
+  .addOptionalParam(
+    "storeFile",
+    "Create or update a specific JSON file to save the storage store.",
+    undefined,
+    types.string
+  )
+  .addFlag("prettify", "Save the file by formatting.")
+  .addFlag(
+    "overwrite",
+    "Overwrite if there is a store file with the same name."
+  )
+  .setDescription("Create or update the new storage store of contracts.")
+  .setAction(storageLockAction);
