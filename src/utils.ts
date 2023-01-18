@@ -1,4 +1,4 @@
-import chalk from "chalk";
+import { green, yellow } from "chalk";
 import { HardhatPluginError } from "hardhat/plugins";
 import type { Artifacts } from "hardhat/types";
 import { PLUGIN_NAME } from "~/constants";
@@ -32,9 +32,9 @@ export const validateFullyQualifiedNames = async (
 };
 
 export const useSuccessConsole = (message: string) => {
-  console.log(chalk.green(`Success in plugin ${PLUGIN_NAME}:\n` + message));
+  console.log(green(`Success in plugin ${PLUGIN_NAME}:\n` + message));
 };
 
 export const useWarningConsole = (message: string) => {
-  console.log(chalk.yellow(`Warning in plugin ${PLUGIN_NAME}:\n` + message));
+  console.log(yellow(`Warning in plugin ${PLUGIN_NAME}:\n` + message));
 };

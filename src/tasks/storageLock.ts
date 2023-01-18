@@ -13,7 +13,7 @@ import type {
 import { useSuccessConsole } from "~/utils";
 
 // TODO: investigate to hardhat artifact cache
-// TODO: change file name to storage-lock (check other repos!)
+// TODO: change file name to storage-lock (check other repos)
 const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   { excludeContracts, storeFile, prettify, overwrite },
   { config, run, artifacts, finder }

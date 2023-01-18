@@ -3,6 +3,8 @@ export interface StorageVaultConfig {
   lock: StorageVaultLockConfig;
 }
 
+export type StorageVaultUserConfig = RecursivePartial<StorageVaultConfig>;
+
 export interface StorageVaultCheckConfig {
   storeFile: string;
 }
