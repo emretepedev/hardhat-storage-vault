@@ -46,7 +46,7 @@ import "hardhat-finder"; // you can remove this line
 
 ## Tasks
 
-This plugin adds `storage-check` and `storage-lock` task to Hardhat:
+This plugin adds `storage-check` and `storage-lock` tasks to Hardhat:
 
 ```
 Usage: hardhat [GLOBAL OPTIONS] storage-lock [--overwrite] [--prettify] [--store-file <STRING>] [...excludeContracts]
