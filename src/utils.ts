@@ -14,7 +14,8 @@ export const validateFullyQualifiedNames = async (
       if (!artifactExist) {
         throw new HardhatPluginError(
           PLUGIN_NAME,
-          "Artifact not found. Try compiling with Hardhat before running this task"
+          "Artifact not found.\n" +
+            "Try compiling with Hardhat before running this task"
         );
       }
     }
@@ -32,9 +33,9 @@ export const validateFullyQualifiedNames = async (
 };
 
 export const useSuccessConsole = (message: string) => {
-  console.log(green(`Success in plugin ${PLUGIN_NAME}:\n` + message));
+  console.log(green(`Success in plugin ${PLUGIN_NAME}:\n${message}\n`));
 };
 
 export const useWarningConsole = (message: string) => {
-  console.log(yellow(`Warning in plugin ${PLUGIN_NAME}:\n` + message));
+  console.log(yellow(`Warning in plugin ${PLUGIN_NAME}:\n${message}\n`));
 };
