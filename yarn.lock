@@ -2363,10 +2363,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-hardhat-finder@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-2.0.4.tgz#6a53e2ad6bc54df90139652c42285c71ed07c959"
-  integrity sha512-d6iwM01ijHtkb/5Wy4/XPnHHNy+oBf6tRlQSNVqHZjl1YhmXDhflr9onM0AS3/6PLe5hFlrjlYEW5lMokHZ4SA==
+hardhat-finder@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/hardhat-finder/-/hardhat-finder-3.0.0.tgz#eb8d4503e3e438747bb953f2759d6b695559f490"
+  integrity sha512-7f5uu7yrO87acSIHrW0uVvJijc8WOS8CZVsDdoaRj8tdhbkqBkwnFoyo5eGSd648hTbcxLxY87MsWkI0Df7WRw==
   dependencies:
     chalk "^4.1.2"
     deepmerge "^4.2.2"

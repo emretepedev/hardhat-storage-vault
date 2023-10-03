@@ -60,7 +60,14 @@ const storageLockAction: ActionType<StorageLockTaskArguments> = async (
   const data: StorageVaultData = {};
   for (const fullyQualifiedName of fullyQualifiedNames) {
     const [contractPath, contractName] = fullyQualifiedName.split(":");
-    await finder.setFor(contractPath, contractName, false);
+    await finder.setFor({
+      contractName,
+      contractPath,
+      options: {
+        noCompile: true,
+        hideWarnings: true,
+      },
+    });
     const storage = finder.getStorageLayout()!!.storage;
     data[fullyQualifiedName] = {};
 

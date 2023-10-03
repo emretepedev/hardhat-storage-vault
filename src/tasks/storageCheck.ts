@@ -52,7 +52,14 @@ const storageCheckAction: ActionType<StorageCheckTaskArguments> = async (
     }
 
     const [contractPath, contractName] = fullyQualifiedName.split(":");
-    await finder.setFor(contractPath, contractName, false);
+    await finder.setFor({
+      contractName,
+      contractPath,
+      options: {
+        noCompile: true,
+        hideWarnings: true,
+      },
+    });
     const storage = finder.getStorageLayout()!!.storage;
     if (
       !finder.getStorageLayout() &&
