@@ -82,12 +82,12 @@ module.exports = {
     },
     lock: {
       excludeContracts: [
-        "^contracts-exposed/" // exclude by directory
-        "^contracts/Example.sol" // exclude by file
-        "Example$" // exclude by contract name
-        "^contracts/Example.sol:Example$" // exclude by fully qualified name
-        "Example.+\\.sol" // regex search (exclude ExampleTwo.sol, ExampleThree.sol but not Example.sol)
-        "Example.*\\.sol" // regex search (exclude Example.sol, ExampleTwo.sol, ExampleThree.sol)
+        "^contracts-exposed/", // exclude by directory
+        "^contracts/Example.sol", // exclude by file
+        "Example$", // exclude by contract name
+        "^contracts/Example.sol:Example$", // exclude by fully qualified name
+        "Example.+\\.sol", // regex search (exclude ExampleTwo.sol, ExampleThree.sol but not Example.sol)
+        "Example.*\\.sol", // regex search (exclude Example.sol, ExampleTwo.sol, ExampleThree.sol)
       ],
       storeFile: "storage-store-lock.json",
       prettify: false,
